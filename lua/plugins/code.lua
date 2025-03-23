@@ -1,5 +1,10 @@
 return {
   {
+    -- disable default
+    "stevearc/conform.nvim",
+    enabled = false,
+  },
+  {
     "L3MON4D3/LuaSnip",
     build = function()
       os.execute("make install_jsregexp")
