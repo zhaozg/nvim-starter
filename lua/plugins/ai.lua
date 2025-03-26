@@ -97,18 +97,45 @@ return {
         },
       })
 
+      local progress_handler = vim.lsp.handlers["$/progress"]
+      local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})
+      vim.api.nvim_create_autocmd({ "User" }, {
+        pattern = "CodeCompanionRequest*",
+        group = group,
+        callback = function(request)
+          local clients = vim.lsp.get_clients({ method = "progress" })
+          local client_id = (clients[1] and clients[1].id) or 1
+          local status, err = pcall(function()
+            if request.match == "CodeCompanionRequestStarted" then
+              progress_handler(nil, {
+                token = "codecampion",
+                value = { message = request.match, kind = "begin" },
+              }, { client_id = client_id, method = "progress" })
+            elseif request.match == "CodeCompanionRequestFinished" then
+              progress_handler(nil, {
+                token = "codecampion",
+                value = { message = request.match, kind = "end" },
+              }, { client_id = client_id, method = "progress" })
+            end
+          end)
+          if not status then
+            vim.notify("Error in progress handler: " .. err, vim.log.levels.ERROR)
+          end
+        end,
+      })
+
       local wk = require("which-key")
       wk.add({
         { "<leader>a", "", desc = "AI" },
-        { "<leader>aa", "<cmd>CodeCompanionActions<CR>", desc = "CodeCompanionActions", mode= { "n", "v" } },
-        { "<leader>ab", "<cmd>CodeCompanionCmd<CR>", desc = "CodeCompanionCmd", mode= { "n", "v" } },
-        { "<leader>ac", "<cmd>CodeCompanionChat toggle<CR>", desc = "CodeCompanionChat", mode= { "n" } },
-        { "<leader>ac", "<cmd>CodeCompanionChat Add<CR>", desc = "CodeCompanionChat", mode= { "v" } },
+        { "<leader>aa", "<cmd>CodeCompanionActions<CR>", desc = "CodeCompanionActions", mode = { "n", "v" } },
+        { "<leader>ab", "<cmd>CodeCompanionCmd<CR>", desc = "CodeCompanionCmd", mode = { "n", "v" } },
+        { "<leader>ac", "<cmd>CodeCompanionChat toggle<CR>", desc = "CodeCompanionChat", mode = { "n" } },
+        { "<leader>ac", "<cmd>CodeCompanionChat Add<CR>", desc = "CodeCompanionChat", mode = { "v" } },
       })
-    end
+    end,
   },
   {
     "MeanderingProgrammer/render-markdown.nvim",
-    ft = { "markdown", "codecompanion" }
+    ft = { "markdown", "codecompanion" },
   },
 }
