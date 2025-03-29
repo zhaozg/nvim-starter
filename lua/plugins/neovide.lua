@@ -17,9 +17,19 @@ vim.g.neovide_cursor_vfx_mode = ""
 vim.g.neovide_input_use_logo = true
 vim.g.neovide_input_macos_option_key_is_meta = "only_left"
 
-vim.g.gui_font_default_size = 21.5
+-- 检查是否为 Linux 系统
+local function is_linux()
+    local sysname = vim.loop.os_uname().sysname
+    return sysname == "Linux"
+end
 
-vim.g.gui_font_size = vim.g.gui_font_default_size
+-- 使用示例
+if is_linux() then
+  vim.g.gui_font_size = 16
+else
+  vim.g.gui_font_size = vim.g.gui_font_default_sizee
+end
+
 vim.g.guifont_face = "Hack Nerd Font Mono"
 vim.g.guifontwide_face = "LXGW Neo XiHei"
 vim.g.linespace = 6
