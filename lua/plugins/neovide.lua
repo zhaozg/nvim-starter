@@ -25,15 +25,14 @@ end
 
 -- 使用示例
 if is_linux() then
-  vim.g.gui_font_default_size = 16
+  vim.g.gui_font_default_size = 14
 else
   vim.g.gui_font_default_size = 20
 end
 vim.g.gui_font_size = vim.g.gui_font_default_size
 
-vim.g.guifont_face = "Hack Nerd Font Mono"
-vim.g.guifontwide_face = "LXGW WenKai Mono"
-vim.g.linespace = 6
+vim.g.guifont_face = "Hack Nerd Font Mono,霞鹜文楷等宽"
+vim.g.guifontwide_face = "霞鹜文楷等宽"
 
 local RefreshGuiFont = function()
   if type(vim.g.guifont_face) ~= "nil" then
