@@ -35,5 +35,11 @@ return {
         set_previous_events = { "InsertLeave" },
       })
     end
+  },
+  {
+    "Zeioth/compiler.nvim",
+    cmd = {"CompilerOpen", "CompilerToggleResults", "CompilerRedo"},
+    dependencies = { "stevearc/overseer.nvim" },
+    opts = {},
   }
 }
