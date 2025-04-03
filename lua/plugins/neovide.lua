@@ -32,7 +32,7 @@ end
 vim.g.gui_font_size = vim.g.gui_font_default_size
 
 vim.g.guifont_face = "Hack Nerd Font Mono"
-vim.g.guifontwide_face = "LXGW Neo XiHei"
+vim.g.guifontwide_face = "LXGW WenKai Mono"
 vim.g.linespace = 6
 
 local RefreshGuiFont = function()
