@@ -27,7 +27,7 @@ end
 if is_linux() then
   vim.g.gui_font_default_size = 14
 else
-  vim.g.gui_font_default_size = 20
+  vim.g.gui_font_default_size = 21.5
 end
 vim.g.gui_font_size = vim.g.gui_font_default_size
 
