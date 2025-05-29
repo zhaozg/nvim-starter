@@ -39,19 +39,6 @@ return {
     },
     config = function(_, opts)
       require("overseer").setup(opts)
-
-      -- 自定义任务命令
-      vim.api.nvim_create_user_command("RunTask", function(_opts)
-        local task_name = _opts.args
-        require("overseer").run_template({ name = task_name }, function(task)
-          if task then
-            -- 确保添加诊断组件
-            task:add_component({ "on_output_parse", parser = "errorformat" })
-            task:add_component("on_result_diagnostics")
-            task:add_component("on_result_diagnostics_quickfix")
-          end
-        end)
-      end, { nargs = 1, complete = require("overseer").task_template_complete })
     end,
   },
   {
@@ -65,7 +52,6 @@ return {
         close = "q", -- 关闭窗口
         refresh = "r", -- 手动刷新
       },
-
       modes = {
         diagnostics = { auto_open = false },
         -- 配置workspace_diagnostics模式
@@ -80,19 +66,5 @@ return {
         }
       }
     },
-    keys = {
-      -- 快捷键映射
-      { "<leader>tt", "<cmd>TroubleToggle<cr>", desc = "Toggle Trouble" },
-      { "<leader>tw", "<cmd>TroubleToggle workspace_diagnostics<cr>", desc = "Workspace Diagnostics" },
-      { "<leader>tq", "<cmd>TroubleToggle quickfix<cr>", desc = "Quickfix List" },
-      {
-        "<leader>tr",
-        function()
-          require("trouble").open()
-          vim.cmd("RunTask build")
-        end,
-        desc = "Run Build with Trouble",
-      },
-    }
   },
 }
