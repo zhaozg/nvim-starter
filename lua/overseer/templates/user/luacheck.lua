@@ -85,7 +85,7 @@ M.setup = function(opts)
     desc = "Run predefined Luacheck task",
     nargs = "*",
     bang = true,
-    complete = function(ArgLead, CmdLine, CursorPos)
+    complete = function(_ArgLead, _CmdLine, _CursorPos)
       return {
         "--ignore", "--only", "--enable", "--disable",
         "--config", "--formatter", "--jobs"

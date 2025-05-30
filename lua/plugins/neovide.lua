@@ -1,6 +1,6 @@
 local vim = vim
 
-if not vim.fn.exists("g:neovide") == 1 then
+if vim.fn.exists("g:neovide") == 0 then
   return {}
 end
 vim.g.neovide_remember_window_size = true
@@ -23,7 +23,11 @@ local function is_linux()
     return sysname == "Linux"
 end
 
--- 使用示例
+local function is_macos()
+    local sysname = vim.loop.os_uname().sysname
+    return sysname == "Darwin"
+end
+
 if is_linux() then
   vim.g.gui_font_default_size = 14
 else
@@ -81,21 +85,38 @@ vim.api.nvim_set_keymap("n", "<A-0>", "", {
 })
 
 -- system clipboard {{{
-vim.g.neovide_input_use_logo = 0
+if is_linux() then
+  vim.g.neovide_input_use_logo = 0
 
--- copy
-vim.api.nvim_set_keymap("i", "<M-c>", '"+y', { noremap = true, silent = true })
-vim.api.nvim_set_keymap("v", "<M-c>", '"+y', { noremap = true, silent = true })
+  -- copy
+  vim.api.nvim_set_keymap("i", "<M-c>", '"+y', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap("v", "<M-c>", '"+y', { noremap = true, silent = true })
 
--- pasta
-vim.api.nvim_set_keymap("i", "<M-v>", "+p", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<M-v>", "+p", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("t", "<M-v>", "+p", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("v", "<M-v>", "+p", { noremap = true, silent = true })
+  -- pasta
+  vim.api.nvim_set_keymap("i", "<M-v>", "+p", { noremap = true, silent = true })
+  vim.api.nvim_set_keymap("n", "<M-v>", "+p", { noremap = true, silent = true })
+  vim.api.nvim_set_keymap("t", "<M-v>", "+p", { noremap = true, silent = true })
+  vim.api.nvim_set_keymap("v", "<M-v>", "+p", { noremap = true, silent = true })
 
--- undo
-vim.api.nvim_set_keymap("n", "<M-z>", '"u', { noremap = true, silent = true })
-vim.api.nvim_set_keymap("i", "<M-z>", "<Esc>ua", { noremap = true, silent = true })
+  -- undo
+  vim.api.nvim_set_keymap("n", "<M-z>", '"u', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap("i", "<M-z>", "<Esc>ua", { noremap = true, silent = true })
+elseif is_macos() then
+  vim.g.neovide_input_use_logo = 1
+
+  vim.api.nvim_set_keymap("i", "<D-c>", '"+y', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap("v", "<D-c>", '"+y', { noremap = true, silent = true })
+
+  -- pasta
+  vim.api.nvim_set_keymap("i", "<D-v>", "+p", { noremap = true, silent = true })
+  vim.api.nvim_set_keymap("n", "<D-v>", "+p", { noremap = true, silent = true })
+  vim.api.nvim_set_keymap("t", "<D-v>", "+p", { noremap = true, silent = true })
+  vim.api.nvim_set_keymap("v", "<D-v>", "+p", { noremap = true, silent = true })
+
+  -- undo
+  vim.api.nvim_set_keymap("n", "<D-z>", '"u', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap("i", "<D-z>", "<Esc>ua", { noremap = true, silent = true })
+end
 
 -- system clipboard }}}
 
