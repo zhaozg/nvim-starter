@@ -104,7 +104,9 @@ return {
         group = group,
         callback = function(request)
           local clients = vim.lsp.get_clients({ method = "progress" })
-          local client_id = (clients[1] and clients[1].id) or 1
+          local client_id = clients[1] and clients[1].id
+          if not client_id then return end
+
           local status, err = pcall(function()
             if request.match == "CodeCompanionRequestStarted" then
               progress_handler(nil, {
