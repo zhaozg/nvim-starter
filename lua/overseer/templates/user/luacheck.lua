@@ -57,15 +57,17 @@ M.template = {
         "default",
       }
     }
-  end,
-  condition = {
-    filetype = { "lua" }
-  }
+  end
 }
 
 M.setup = function(opts)
+  local strict = opts.strict
+  opts.strict = nil
   opts = vim.tbl_deep_extend("force", M.template, opts or {})
   require("overseer").register_template(opts)
+  if strict then
+    return
+  end
 
   -- Luacheck
   vim.api.nvim_create_user_command("Luacheck", function(params)
