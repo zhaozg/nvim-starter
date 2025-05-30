@@ -5,6 +5,12 @@
       "plugins": true
     }
   },
+  "overseer": {
+    "templates": {
+      "user.luacheck" : {
+      }
+    }
+  },
   "neoconf": {
     "plugins": {
       "lua_ls": {

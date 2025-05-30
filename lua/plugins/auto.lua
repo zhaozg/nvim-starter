@@ -2,8 +2,14 @@
 return {
   {
     "folke/neoconf.nvim",
-    cmd = "Neoconf",
-    opts = function(_, opts)
+
+    -- Setup `require("neoconf").setup()` should be run **BEFORE** setting up
+    -- any lsp server with lspconfig
+    lazy = false,
+    priority = 9999,
+    config = function(_, opts)
+      require("neoconf").setup(opts)
+
       local function setup_filetype()
         local conf = require("neoconf").get("filetype") or {}
         for k, v in pairs(conf) do
