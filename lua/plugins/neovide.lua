@@ -81,21 +81,21 @@ vim.api.nvim_set_keymap("n", "<A-0>", "", {
 })
 
 -- system clipboard {{{
-vim.g.neovide_input_use_logo = true
-vim.cmd("set clipboard+=unnamedplus")
+vim.g.neovide_input_use_logo = 0
 
 -- copy
-vim.api.nvim_set_keymap("i", "<D-c>", '"+y', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("i", "<M-c>", '"+y', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "<M-c>", '"+y', { noremap = true, silent = true })
 
 -- pasta
-vim.api.nvim_set_keymap("", "<D-v>", "+p<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("!", "<D-v>", "<C-R>+", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("t", "<D-v>", "<C-R>+", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("v", "<D-v>", "<C-R>+", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("i", "<M-v>", "+p", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<M-v>", "+p", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("t", "<M-v>", "+p", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("v", "<M-v>", "+p", { noremap = true, silent = true })
 
 -- undo
-vim.api.nvim_set_keymap("n", "<D-z>", '"u', { noremap = true, silent = true })
-vim.api.nvim_set_keymap("i", "<D-z>", "<Esc>ua", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<M-z>", '"u', { noremap = true, silent = true })
+vim.api.nvim_set_keymap("i", "<M-z>", "<Esc>ua", { noremap = true, silent = true })
 
 -- system clipboard }}}
 

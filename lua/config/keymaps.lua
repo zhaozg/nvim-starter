@@ -5,6 +5,11 @@
 local map = LazyVim.safe_keymap_set
 local gs = require("gitsigns")
 
+vim.opt.clipboard="unnamedplus"
+vim.keymap.set('v', '<A-c>', '"+y', { noremap = true })      -- 可视模式复制
+vim.keymap.set('n', '<A-v>', '"+p', { noremap = true })      -- 普通模式粘贴
+vim.keymap.set('i', '<A-v>', '<C-o>"+p', { noremap = true }) -- 插入模式粘贴
+
 -- gitsigns 的键位映射
 -- Navigation
 map("n", "]g", function() gs.nav_hunk("next") end, { desc = "Next Git Hunk" })
