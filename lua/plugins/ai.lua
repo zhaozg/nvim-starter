@@ -2,6 +2,7 @@ return {
   {
     "olimorris/codecompanion.nvim",
     dependencies = {
+      "rcarriga/nvim-notify",
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
     },
@@ -99,13 +100,35 @@ return {
 
       local progress_handler = vim.lsp.handlers["$/progress"]
       local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})
+
+      local spinner_frames = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+      local spinner_index = 0
+      local notify = require("notify")
+      local notice
+
       vim.api.nvim_create_autocmd({ "User" }, {
         pattern = "CodeCompanionRequest*",
         group = group,
         callback = function(request)
           local clients = vim.lsp.get_clients({ method = "progress" })
           local client_id = clients[1] and clients[1].id
-          if not client_id then return end
+          if not client_id then
+            spinner_index = (spinner_index % #spinner_frames) + 1
+
+            local msg = "正在处理..." .. spinner_frames[spinner_index]
+            if request.match == "CodeCompanionRequestFinished" then
+              msg = "完成处理"
+            end
+            notice = notify(msg, vim.log.levels.INFO, {
+              render = "minimal",
+              minimum_width = 10,
+              top_down = false,
+              title = "CodeCompanion",
+              replace = notice,
+            })
+
+            return
+          end
 
           local status, err = pcall(function()
             if request.match == "CodeCompanionRequestStarted" then

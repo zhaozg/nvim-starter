@@ -13,6 +13,10 @@ return {
   },
 
   {
+    "rcarriga/nvim-notify",
+  },
+
+  {
     "nvim-lualine/lualine.nvim",
     opts = {
       options = {
