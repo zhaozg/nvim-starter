@@ -5,9 +5,65 @@ return {
       "rcarriga/nvim-notify",
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
+      "folke/neoconf.nvim",
     },
     config = function()
+      local user = require('neoconf').get('codecompanion') or {}
+
+      local function get_Adapter(model, provider, opts)
+        if model == 'deepseek' and provider==nil then
+          local url = os.getenv("DEEPSEEK_API_URL") or "https://api.deepseek.com"
+          local apikey = os.getenv("DEEPSEEK_API_KEY")
+          if apikey then
+            return require("codecompanion.adapters").extend("deepseek", {
+              env = {
+                url = url,
+                api_key = function()
+                  return apikey
+                end
+              },
+            })
+          end
+        elseif provider=='ollama' then
+          model = model or os.getenv("OLLAMA_NVIM_MODEL") or "qwen2.5-coder:3b"
+          local name = model ..'@'.. provider
+
+          return require("codecompanion.adapters").extend("ollama", {
+            name = name,
+            schema = {
+              model = { default = model },
+            },
+          })
+        elseif provider=='aliyun' then
+          local url = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
+          local name = model ..'@'.. provider
+          local adapter = model:match('^deepseek') and "deepseek" or "openai_compatible"
+          local apikey = os.getenv("ALIYUN_API_KEY")
+
+          if apikey then
+            return require("codecompanion.adapters").extend(adapter, {
+              name = name,
+              url = url,
+              env = {
+                api_key = function()
+                  return apikey
+                end,
+              },
+              schema = {
+                model = {
+                  default = model,
+                  choices = {
+                    [model] = { opts = opts },
+                  },
+                },
+              },
+            })
+          end
+        end
+      end
+
       require("codecompanion").setup({
+        prompt_library = user.prompt_library,
         display = {
           action_palette = {
             width = 95,
@@ -23,8 +79,8 @@ return {
           },
         },
         opts = {
-          log_level = "DEBUG",
-          language = "Chinese",
+          log_level = "INFO",
+          language = "English", -- Language used for LLM calls
         },
         strategies = {
           chat = { adapter = "copilot" },
@@ -32,68 +88,12 @@ return {
           agent = { adapter = "copilot" },
         },
         adapters = {
-          ollama = function()
-            local name = os.getenv("OLLAMA_NVIM_NAME") or "qwen"
-            local model = os.getenv("OLLAMA_NVIM_MODEL") or "qwen2.5-coder:3b"
-
-            return require("codecompanion.adapters").extend("ollama", {
-              name = name,
-              schema = {
-                model = { default = model },
-              },
-            })
-          end,
-          deepseek = function()
-            local url = os.getenv("DEEPSEEK_NVIM_URL") or nil
-            local apikey = os.getenv("DEEPSEEK_API_KEY")
-
-            return require("codecompanion.adapters").extend("deepseek", {
-              env = {
-                url = url,
-                api_key = apikey,
-              },
-            })
-          end,
-          aliyun_deepseek = function()
-            return require("codecompanion.adapters").extend("deepseek", {
-              name = "aliyun_deepseek",
-              url = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
-              env = {
-                api_key = function()
-                  return os.getenv("ALIYUN_API_KEY")
-                end,
-              },
-              schema = {
-                model = {
-                  default = "deepseek-r1",
-                  choices = {
-                    ["deepseek-r1"] = { opts = { can_reason = true } },
-                  },
-                },
-              },
-            })
-          end,
-          qwen_coder_turbo = function()
-            return require("codecompanion.adapters").extend("openai_compatible", {
-              name = "qwen_coder_turbo",
-              env = {
-                -- optional: default value is ollama url http://127.0.0.1:11434
-                url = "https://dashscope.aliyuncs.com",
-                api_key = function()
-                  return os.getenv("ALIYUN_API_KEY")
-                end,
-                -- optional: default value, override if different
-                chat_url = "/compatible-mode/v1/chat/completions",
-              },
-              schema = {
-                model = {
-                  default = "qwen-coder-turbo",
-                },
-              },
-            })
-          end,
+          ollama = get_Adapter('qwen2.5-coder:3b', 'ollama', 'qwen');
+          deepseek = get_Adapter('deepseek'),
+          aliyun_deepseek = get_Adapter('deepseek-r1', 'aliyun',  { can_reason = true }),
+          qwen_coder_turbo = get_Adapter('qwen-coder-turbo', 'aliyun'),
           opts = {
-            show_defaults = true,
+            show_defaults = false,
           },
         },
       })
