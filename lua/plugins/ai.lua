@@ -8,7 +8,6 @@ return {
       "folke/neoconf.nvim",
     },
     config = function()
-      local user = require('neoconf').get('codecompanion') or {}
 
       local function get_Adapter(model, provider, opts)
         if model == 'deepseek' and provider==nil then
@@ -62,6 +61,13 @@ return {
         end
       end
 
+      local adapters = { opts = { show_defaults = false } }
+      local user = require('neoconf').get('codecompanion') or {}
+      for k, v in pairs(user.adapters or {}) do
+        local name = v.name or k
+        adapters[k] = get_Adapter(name, v.provider, v.opts)
+      end
+
       require("codecompanion").setup({
         prompt_library = user.prompt_library,
         display = {
@@ -87,15 +93,7 @@ return {
           inline = { adapter = "copilot" },
           agent = { adapter = "copilot" },
         },
-        adapters = {
-          ollama = get_Adapter('qwen2.5-coder:3b', 'ollama', 'qwen');
-          deepseek = get_Adapter('deepseek'),
-          aliyun_deepseek = get_Adapter('deepseek-r1', 'aliyun',  { can_reason = true }),
-          qwen_coder_turbo = get_Adapter('qwen-coder-turbo', 'aliyun'),
-          opts = {
-            show_defaults = false,
-          },
-        },
+        adapters = adapters
       })
 
       local progress_handler = vim.lsp.handlers["$/progress"]
