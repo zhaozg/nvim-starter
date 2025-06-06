@@ -9,12 +9,17 @@ return {
     },
     config = function()
 
-      local function get_Adapter(model, provider, opts)
-        if model == 'deepseek' and provider==nil then
+      local function get_Adapter(name, provider, model, opts)
+        if name == 'deepseek' and provider==nil then
           local url = os.getenv("DEEPSEEK_API_URL") or "https://api.deepseek.com"
           local apikey = os.getenv("DEEPSEEK_API_KEY")
           if apikey then
             return require("codecompanion.adapters").extend("deepseek", {
+              schema = {
+                model = {
+                  default = model or "deepseek-chat"
+                }
+              },
               env = {
                 url = url,
                 api_key = function()
@@ -24,18 +29,22 @@ return {
             })
           end
         elseif provider=='ollama' then
-          model = model or os.getenv("OLLAMA_NVIM_MODEL") or "qwen2.5-coder:3b"
-          local name = model ..'@'.. provider
+          model = model or name
+          name = name ..'@'.. provider
 
           return require("codecompanion.adapters").extend("ollama", {
             name = name,
             schema = {
               model = { default = model },
+              choices = {
+                [model] = { opts = opts },
+              },
             },
           })
         elseif provider=='aliyun' then
           local url = "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions"
-          local name = model ..'@'.. provider
+          model = model or name
+          name = model ..'@'.. provider
           local adapter = model:match('^deepseek') and "deepseek" or "openai_compatible"
           local apikey = os.getenv("ALIYUN_API_KEY")
 
@@ -65,7 +74,7 @@ return {
       local user = require('neoconf').get('codecompanion') or {}
       for k, v in pairs(user.adapters or {}) do
         local name = v.name or k
-        adapters[k] = get_Adapter(name, v.provider, v.opts)
+        adapters[k] = get_Adapter(name, v.provider, v.model, v.opts)
       end
 
       require("codecompanion").setup({
