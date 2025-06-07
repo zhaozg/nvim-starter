@@ -7,25 +7,19 @@ return {
   -- Configure LazyVim to load gruvbox
   {
     "LazyVim/LazyVim",
+    pin = true,
     opts = {
       colorscheme = "gruvbox",
     },
   },
-
+  {
+    "echasnovski/mini.nvim",
+    config = function()
+      require('mini.tabline').setup({})
+    end,
+  },
   {
     "rcarriga/nvim-notify",
-  },
-
-  {
-    "nvim-lualine/lualine.nvim",
-    opts = {
-      options = {
-        thueme = "gruvbox-dark",
-        component_separators = { left = "│", right = "" },
-        section_separators = { left = "", right = "" },
-        globalstatus = true,
-      }
-    }
   },
 
   {
@@ -120,19 +114,6 @@ return {
           width = 25, -- Only applies when position is 'left' or 'right'
           height = 10, -- Only applies when position is 'top' or 'bottom'
         },
-      },
-    },
-  },
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    main = "ibl",
-    opts = {
-      indent = { char = "|" },
-      whitespace = {
-        highlight = {
-          "Whitespace", "NonText"
-        },
-        remove_blankline_trail = true,
       },
     },
   },
