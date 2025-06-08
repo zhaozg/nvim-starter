@@ -5,9 +5,6 @@ return {
     dependencies = {
       "folke/neoconf.nvim",
     },
-    opts = {
-      templates = { "builtin", "vscode" }
-    },
 
     config = function(_, opts)
       require("overseer").setup(opts)
