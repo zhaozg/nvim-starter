@@ -11,8 +11,8 @@ return {
       require("neoconf").setup(opts)
 
       local function setup_filetype()
-        local conf = require("neoconf").get("filetype") or {}
-        for k, v in pairs(conf) do
+        local user = require('neoconf').get('filetype') or {}
+        for k, v in pairs(user) do
           vim.api.nvim_create_autocmd({'BufRead', 'BufNewFile'}, {
             pattern = k,
             command = "set filetype=" .. v

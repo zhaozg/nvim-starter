@@ -9,7 +9,7 @@ return {
     config = function(_, opts)
       require("overseer").setup(opts)
 
-      local user = require("neoconf").get("overseer") or {}
+      local user = require('neoconf').get('overseer') or {}
       if user.templates then
         for k, v in pairs(user.templates) do
           local tpl = require(string.format("overseer.templates.%s", k))
