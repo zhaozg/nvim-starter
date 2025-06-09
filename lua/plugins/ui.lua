@@ -14,8 +14,12 @@ return {
   },
   {
     "echasnovski/mini.nvim",
-    config = function()
-      require('mini.tabline').setup({})
+    otps = {},
+    config = function(_, opts)
+      require('mini.tabline').setup(opts)
+
+      -- active mini.snippets
+      require('mini.snippets').setup(opts)
     end,
   },
 
