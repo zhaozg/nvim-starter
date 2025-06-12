@@ -14,13 +14,54 @@ return {
   },
   {
     "echasnovski/mini.nvim",
-    otps = {},
     config = function(_, opts)
-      require('mini.tabline').setup(opts)
-
       -- active mini.snippets
       require('mini.snippets').setup(opts)
     end,
+  },
+
+  {
+    "nvim-lualine/lualine.nvim",
+    lazy = false,
+    opts = {
+      tabline = {
+        lualine_a = {
+          { -- 当前标签页
+            'buffers',
+            mode = 2, -- 只显示标签页索引与名称
+            tabs_color = {
+              active = 'lualine_a_normal',
+              inactive = 'lualine_a_inactive',
+            },
+            icons_enabled = true,
+            symbols = {
+              alternate_file = '#',
+              directory = '',
+            },
+          }
+        },
+        lualine_z = {
+          {
+            -- 当前窗口列表
+            'windows',
+            show_filename_only = true,
+            show_modified_status = true,
+            mode = 1,
+            icons_enabled = true,
+            filetype_names = {
+              TelescopePrompt = '',
+              NvimTree = '',
+              dashboard = '',
+            },
+            symbols = {
+              modified = '●',        -- 已修改
+              alternate_file = '#',  -- 备用文件
+              directory = '',       -- 目录
+            },
+          }
+        }
+      }
+    }
   },
 
   {
