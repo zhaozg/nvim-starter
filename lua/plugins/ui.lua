@@ -71,7 +71,40 @@ return {
 
   {
     "lewis6991/satellite.nvim",
-    opts = {},
+    opts = {
+      current_only = true,
+      handlers = {
+        cursor = {
+          enable = true,
+          overlap = true
+        },
+        search = {
+          enable = true,
+          overlap = true
+        },
+        diagnostic = {
+          enable = true,
+          overlap = true,
+          signs = {'-', '=', '≡'},
+          min_severity = vim.diagnostic.severity.HINT,
+        },
+        gitsigns = {
+          enable = true,
+          overlap = true,
+          signs = { -- can only be a single character (multibyte is okay)
+            add = "│",
+            change = "~",
+            delete = "-",
+          },
+        },
+        marks = {
+          enable = true,
+          overlap = true,
+          key =  'm',
+          show_builtins = true, -- shows the builtin marks like [ ] < >
+        },
+      },
+    },
   },
 
   {
