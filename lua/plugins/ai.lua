@@ -10,7 +10,7 @@ return {
     config = function()
 
       local function get_Adapter(name, provider, model, opts)
-        if name == 'deepseek' and provider==nil then
+        if name == 'deepseek' and (provider=='deepseek' or provider==nil) then
           local url = os.getenv("DEEPSEEK_API_URL") or "https://api.deepseek.com"
           local apikey = os.getenv("DEEPSEEK_API_KEY")
           if apikey then
@@ -30,7 +30,6 @@ return {
           end
         elseif provider=='ollama' then
           model = model or name
-          name = name ..'@'.. provider
 
           return require("codecompanion.adapters").extend("ollama", {
             name = name,
