@@ -1,11 +1,15 @@
 return {
   {
+    "ravitemer/codecompanion-history.nvim"
+  },
+  {
     "olimorris/codecompanion.nvim",
     dependencies = {
       "rcarriga/nvim-notify",
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
       "folke/neoconf.nvim",
+      "ravitemer/codecompanion-history.nvim",
     },
     config = function()
 
@@ -97,9 +101,34 @@ return {
           language = "English", -- Language used for LLM calls
         },
         strategies = {
-          chat = { adapter = "copilot" },
+          chat = {
+            adapter = "copilot",
+            slash_commands = {
+              ["file"] = {
+                opts = {
+                  provider = "default", -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks"
+                  contains_code = true,
+                },
+              },
+              ["buffer"] = {
+                opts = {
+                  provider = "default", -- Can be "default", "telescope", "fzf_lua", "mini_pick" or "snacks"
+                  contains_code = true,
+                },
+              },
+            },
+          },
           inline = { adapter = "copilot" },
           agent = { adapter = "copilot" },
+        },
+        extensions = {
+          history = {
+            enabled = true,
+            opts = {
+              -- Picker interface (auto resolved to a valid picker)
+              picker = "default", --- ("telescope", "snacks", "fzf-lua", or "default")
+            }
+          }
         },
         adapters = adapters
       })
