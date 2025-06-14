@@ -27,14 +27,10 @@ return {
   {
     "keaising/im-select.nvim",
     config = function()
+      local utils = require("utils")
 
-      local function is_linux()
-          local sysname = vim.loop.os_uname().sysname
-          return sysname == "Linux"
-      end
-
-      local ime_switch = is_linux() and "ibus" or "im-select"
-      local ime_select = is_linux() and "xkb:us::eng" or "im.rime.inputmethod.Squirrel.Hans"
+      local ime_switch = utils.is_linux() and "ibus" or "im-select"
+      local ime_select = utils.is_linux() and "xkb:us::eng" or "im.rime.inputmethod.Squirrel.Hans"
       require("im_select").setup({
         default_command = ime_switch,
         default_im_select = ime_select,

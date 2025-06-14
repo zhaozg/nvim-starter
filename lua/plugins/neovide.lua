@@ -17,18 +17,10 @@ vim.g.neovide_cursor_vfx_mode = ""
 vim.g.neovide_input_use_logo = true
 vim.g.neovide_input_macos_option_key_is_meta = "only_left"
 
+local utils = require("utils")
 -- 检查是否为 Linux 系统
-local function is_linux()
-    local sysname = vim.loop.os_uname().sysname
-    return sysname == "Linux"
-end
 
-local function is_macos()
-    local sysname = vim.loop.os_uname().sysname
-    return sysname == "Darwin"
-end
-
-if is_linux() then
+if utils.is_linux() then
   vim.g.gui_font_default_size = 14
 else
   vim.g.gui_font_default_size = 21.5
@@ -85,7 +77,7 @@ vim.api.nvim_set_keymap("n", "<A-0>", "", {
 })
 
 -- system clipboard {{{
-if is_linux() then
+if utils.is_linux() then
   vim.g.neovide_input_use_logo = 0
 
   -- copy
@@ -101,7 +93,7 @@ if is_linux() then
   -- undo
   vim.api.nvim_set_keymap("n", "<M-z>", '"u', { noremap = true, silent = true })
   vim.api.nvim_set_keymap("i", "<M-z>", "<Esc>ua", { noremap = true, silent = true })
-elseif is_macos() then
+elseif utils.is_macos() then
   vim.g.neovide_input_use_logo = 1
 
   vim.api.nvim_set_keymap("i", "<D-c>", '"+y', { noremap = true, silent = true })
