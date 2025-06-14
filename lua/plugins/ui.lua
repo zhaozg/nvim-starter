@@ -12,13 +12,6 @@ return {
       colorscheme = "gruvbox",
     },
   },
-  {
-    "echasnovski/mini.nvim",
-    config = function(_, opts)
-      -- active mini.snippets
-      require('mini.snippets').setup(opts)
-    end,
-  },
 
   {
     "nvim-lualine/lualine.nvim",
