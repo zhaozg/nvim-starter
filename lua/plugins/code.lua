@@ -1,4 +1,5 @@
 return {
+  { 'tpope/vim-repeat' },
   {
     'andythigpen/nvim-coverage',
     after = "nvim-lua/plenary.nvim",
