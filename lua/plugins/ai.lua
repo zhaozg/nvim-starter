@@ -186,8 +186,7 @@ return {
 
       local wk = require("which-key")
       wk.add({
-        { "<leader>a", "", desc = "AI" },
-        { "<leader>aa", "<cmd>CodeCompanionActions<CR>", desc = "CodeCompanionActions", mode = { "n", "v" } },
+        { "<leader>a ", "<cmd>CodeCompanionActions<CR>", desc = "CodeCompanionActions", mode = { "n", "v" } },
         { "<leader>ab", "<cmd>CodeCompanionCmd<CR>", desc = "CodeCompanionCmd", mode = { "n", "v" } },
         { "<leader>ac", "<cmd>CodeCompanionChat toggle<CR>", desc = "CodeCompanionChat", mode = { "n" } },
         { "<leader>ac", "<cmd>CodeCompanionChat Add<CR>", desc = "CodeCompanionChat", mode = { "v" } },
