@@ -7,6 +7,12 @@ return {
       require('mini.operators').setup()
       require('mini.sessions').setup()
 
+      local diff = require("mini.diff")
+      diff.setup({
+        -- Disabled by default, this need by codecompanion.nvim
+        source = diff.gen_source.none(),
+      })
+
       local hipatterns = require('mini.hipatterns')
       hipatterns.setup({
         highlighters = {

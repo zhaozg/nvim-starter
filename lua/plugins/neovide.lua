@@ -100,9 +100,9 @@ elseif utils.is_macos() then
   vim.api.nvim_set_keymap("v", "<D-c>", '"+y', { noremap = true, silent = true })
 
   -- pasta
-  vim.api.nvim_set_keymap("n", "<D-v>", "+P", { noremap = true, silent = true })
-  vim.api.nvim_set_keymap("t", "<D-v>", "+P", { noremap = true, silent = true })
-  vim.api.nvim_set_keymap("v", "<D-v>", "+P", { noremap = true, silent = true })
+  vim.api.nvim_set_keymap("n", "<D-v>", '"+P', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap("t", "<D-v>", '"+P', { noremap = true, silent = true })
+  vim.api.nvim_set_keymap("v", "<D-v>", '"+P', { noremap = true, silent = true })
   vim.api.nvim_set_keymap('c', '<D-v>', '<C-R>+', { noremap = true })
   vim.api.nvim_set_keymap("i", "<D-v>", '<ESC>l"+Pli', { noremap = true, silent = true })
 
