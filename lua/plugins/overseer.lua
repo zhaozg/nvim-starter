@@ -37,6 +37,26 @@ return {
         nargs = "*",
         bang = true,
       })
+
+      vim.api.nvim_create_user_command("Zig", function(params)
+        -- Insert args at the '$*' in the zig command line
+        local cmd, num_subs = string.gsub("zig", "%$%*", params.args)
+        if num_subs == 0 then
+          cmd = cmd .. " " .. params.args
+        end
+        local task = require("overseer").new_task({
+          cmd = vim.fn.expandcmd(cmd),
+          components = {
+            { "on_output_quickfix", open = not params.bang, open_height = 8 },
+            "default",
+          },
+        })
+        task:start()
+      end, {
+        desc = "Run your Zig as an Overseer task",
+        nargs = "*",
+        bang = true,
+      })
     end
   },
   {
