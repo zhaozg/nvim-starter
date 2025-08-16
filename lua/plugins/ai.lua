@@ -98,11 +98,12 @@ return {
         },
         opts = {
           log_level = "INFO",
-          language = "English", -- Language used for LLM calls
+          language = "Chinese", -- Language used for LLM calls
         },
         strategies = {
           chat = {
             adapter = "copilot",
+            model = "claude-sonnet-4",
             slash_commands = {
               ["file"] = {
                 opts = {
