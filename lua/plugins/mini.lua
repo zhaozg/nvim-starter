@@ -34,18 +34,13 @@ return {
         mappings = { stop = "<esc>" }, -- <c-c> by default, see :h MiniSnippets-session
       })
 
-      require('mini.trailspace').setup()
-      -- HACK: We need to disabel the mini.trailspace and enable when a new buffer is
-      -- created to avoid interference with the dashboard snacks.nvim. See:
-      --
-      --  https://github.com/echasnovski/mini.nvim/issues/1395
-      vim.g.minitrailspace_disable = true
-
-      vim.api.nvim_create_autocmd("BufNew", {
-        callback = function()
-          vim.g.minitrailspace_disable = false
-        end
-      })
+      vim.defer_fn(function()
+        require('mini.trailspace').setup()
+        -- HACK: We need to disabel the mini.trailspace and enable when a new buffer is
+        -- created to avoid interference with the dashboard snacks.nvim. See:
+        --
+        --  https://github.com/echasnovski/mini.nvim/issues/1395
+      end, 0)
     end,
   },
 }

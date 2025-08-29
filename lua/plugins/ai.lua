@@ -3,8 +3,12 @@ return {
     "ravitemer/codecompanion-history.nvim"
   },
   {
+    "ravitemer/mcphub.nvim"
+  },
+  {
     "olimorris/codecompanion.nvim",
     dependencies = {
+      "ravitemer/mcphub.nvim",
       "rcarriga/nvim-notify",
       "nvim-lua/plenary.nvim",
       "nvim-treesitter/nvim-treesitter",
@@ -123,6 +127,14 @@ return {
           agent = { adapter = "copilot" },
         },
         extensions = {
+          mcphub = {
+            callback = "mcphub.extensions.codecompanion",
+            opts = {
+              make_vars = true,
+              make_slash_commands = true,
+              show_result_in_chat = true
+            }
+          },
           history = {
             enabled = true,
             opts = {
