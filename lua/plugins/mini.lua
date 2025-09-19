@@ -1,6 +1,6 @@
 return {
   {
-    "echasnovski/mini.nvim",
+    "nvim-mini/mini.nvim",
     config = function(_, opts)
       require('mini.move').setup()
       require('mini.cursorword').setup()
