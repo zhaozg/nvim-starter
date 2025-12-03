@@ -14,6 +14,7 @@ return {
   },
   {
     "olimorris/codecompanion.nvim",
+    version = "v17.33.0",
     dependencies = {
       "ravitemer/mcphub.nvim",
       "rcarriga/nvim-notify",
